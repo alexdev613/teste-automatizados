@@ -1,5 +1,7 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom'; // Obs: para o test funcionar
 import App from './App';
+
 
 function sum(n1: number, n2: number) {
   return n1 + n2;
@@ -33,6 +35,8 @@ describe("First test app component", () => {
 
 })
 
+//----------------------------------//
+
 describe("App component", () => {
 
   it("should render app component", () => {
@@ -41,6 +45,29 @@ describe("App component", () => {
     screen.getByText("Alex Developer")
   })
 
+  it("should heading h1 have correct text", () => {
+    render(<App/>);
+
+    const headingElement = screen.getByRole("heading", { level: 1});
+    expect(headingElement).toHaveTextContent("Alex Developer");
+    expect(headingElement).toHaveClass("titulo")
+  })
+
+  it("should change message on button click", () => {
+    render(<App />);
+
+    const buttonElement = screen.getByText("Alterar Mensagem");
+    fireEvent.click(buttonElement);
+
+    screen.getByText("Estudando testes com ReactJS");
+
+    const newMessage = screen.queryByText("Estudando testes com ReactJS");
+    expect(newMessage).toBeInTheDocument();
+
+    const oldMessage = screen.queryByText("Bem vindo ao projeto!");
+    expect(oldMessage).not.toBeInTheDocument();
+
+  })
 
 })
 
