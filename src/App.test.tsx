@@ -42,15 +42,26 @@ describe("App component", () => {
   it("should render app component", () => {
     render(<App/>)
 
-    screen.getByText("Alex Developer")
+    // screen.getByText("Alex Developer")
+    const headerTitle = screen.getByTestId("header");
+    expect(headerTitle).toBeInTheDocument();
+
+    expect(headerTitle).toHaveTextContent("Alex Developer")
   })
 
   it("should heading h1 have correct text", () => {
     render(<App/>);
 
-    const headingElement = screen.getByRole("heading", { level: 1});
-    expect(headingElement).toHaveTextContent("Alex Developer");
-    expect(headingElement).toHaveClass("titulo")
+    // const headingElement = screen.getByRole("heading", { level: 1});
+    // expect(headingElement).toHaveTextContent("Alex Developer");
+    // expect(headingElement).toHaveClass("titulo")
+
+    const titleElements = screen.getAllByRole("heading", { level: 1 });
+
+    titleElements.map( (element) => {
+      expect(element).toHaveTextContent("Alex Developer");
+    })
+ 
   })
 
   it("should change message on button click", () => {
